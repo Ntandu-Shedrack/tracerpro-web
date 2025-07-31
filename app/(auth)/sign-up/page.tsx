@@ -3,7 +3,7 @@
 import { registerUser } from "@/actions/user.actions";
 import { AuthForm } from "@/components/forms/AuthForm";
 import { signUpSchema } from "@/types/auth";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 export default function SignUpPage() {
