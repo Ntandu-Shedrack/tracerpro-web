@@ -55,7 +55,9 @@ export const forgotPasswordSchema = z.object({
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 
 export const verifyEmailSchema = z.object({
-  email: z.string().email("Invalid email"),
+  verificationCode: z
+    .array(z.string().length(1, "Each digit required"))
+    .length(5, "Code must be 5 digits"),
 });
 
 export type VerifyEmailData = z.infer<typeof verifyEmailSchema>;
@@ -70,6 +72,9 @@ export const resetPasswordSchema = z
       .regex(/\d/, "Include number")
       .regex(/[^A-Za-z0-9]/, "Include special character"),
     confirmPassword: z.string(),
+    verificationCode: z
+      .array(z.string().length(1, "Each digit required"))
+      .length(5, "Code must be 5 digits"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

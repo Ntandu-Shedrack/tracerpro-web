@@ -1,16 +1,16 @@
 import {
   Home,
-  Calendar,
+  Archive,
   MessageCircle,
   Inbox,
-  BarChart2,
   FileText,
+  UserPen,
   Settings,
 } from "lucide-react";
 
 export const sidebarLinks = [
-  { label: "Dashboard", href: "/dashboard", icon: Home },
-  { label: "Schedules", href: "/schedules", icon: Calendar },
+  { label: "Dashboard", href: "/home", icon: Home },
+  { label: "Inventory", href: "/inventory", icon: Archive },
   {
     label: "Messages",
     href: "/messages",
@@ -19,7 +19,7 @@ export const sidebarLinks = [
     badge: 3,
   },
   { label: "Inbox", href: "/inbox", icon: Inbox },
-  { label: "Analytics", href: "/analytics", icon: BarChart2 },
-  { label: "News", href: "/news", icon: FileText },
+  { label: "Reports", href: "/reports", icon: FileText },
+  { label: "Profile", href: "/profile", icon: UserPen },
   { label: "Settings", href: "/settings", icon: Settings },
 ];

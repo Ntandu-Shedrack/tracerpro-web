@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { loginUser } from "@/actions/user.actions";
 import { AuthForm } from "@/components/forms/AuthForm";
 import { signInSchema } from "@/types/auth";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import type { z } from "zod";
 
 export default function SignInPage() {
@@ -11,16 +13,24 @@ export default function SignInPage() {
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     try {
-      const result = await loginUser(data);
-      // Optionally handle result (e.g., show error if login fails)
-      router.push("/dashboard");
-    } catch (error) {
-      // Handle error (e.g., show notification)
-      console.error("Login failed:", error);
+      await loginUser(data);
+      toast.success("Logged in successful");
+      router.push("/home");
+    } catch (error: any) {
+      const errorMessage =
+        error?.message ||
+        (typeof error === "string" ? error : "Login failed. Please try again.");
+      toast.error(`Login Failed: ${errorMessage}`);
     }
   };
 
   return (
-    <AuthForm mode="signin" schema={signInSchema} onSubmitHandler={onSubmit} />
+    <div className="container">
+      <AuthForm
+        mode="signin"
+        schema={signInSchema}
+        onSubmitHandler={onSubmit}
+      />
+    </div>
   );
 }

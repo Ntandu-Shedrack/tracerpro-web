@@ -52,17 +52,17 @@ export const AuthForm = ({
     setIsLoading(true);
     try {
       await onSubmitHandler(data);
-      toast.success(
-        mode === "forgot-password"
-          ? "Password reset link sent!"
-          : mode === "verify-email"
-          ? "Verification email sent!"
-          : mode === "reset-password"
-          ? "Password reset successfully!"
-          : `${
-              mode === "signin" ? "Signed in" : "Account created"
-            } successfully!`
-      );
+      // toast.success(
+      //   mode === "forgot-password"
+      //     ? "Password reset link sent!"
+      //     : mode === "verify-email"
+      //     ? "Verification email sent!"
+      //     : mode === "reset-password"
+      //     ? "Password reset successfully!"
+      //     : `${
+      //         mode === "signin" ? "Signed in" : "Account created"
+      //       } successfully!`
+      // );
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");
     } finally {
@@ -113,8 +113,8 @@ export const AuthForm = ({
             )}
             {mode === "verify-email" && (
               <>
-                We have sent an email with verification information to
-                n****e@e***e.com.
+                We have sent a message with verification code to your Email
+                Inbox, Please enter the 5-digit code to continue.
               </>
             )}
             {mode === "reset-password" && (
@@ -127,6 +127,34 @@ export const AuthForm = ({
           <div className="grid grid-cols-2 gap-4">
             <Input placeholder="First Name" {...register("firstName")} />
             <Input placeholder="Last Name" {...register("lastName")} />
+          </div>
+        )}
+
+        {mode === "signup" && (
+          <div>
+            <Controller
+              control={control}
+              name="gender"
+              render={({ field }) => (
+                <div>
+                  <select
+                    id="gender"
+                    {...field}
+                    className="bg-primary border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {errors.gender && (
+                    <p className="text-sm text-red-500">
+                      {errors.gender.message as string}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
           </div>
         )}
 
@@ -145,6 +173,12 @@ export const AuthForm = ({
 
         {mode === "signup" && (
           <Input type="tel" placeholder="Phone Number" {...register("phone")} />
+        )}
+
+        {mode === "reset-password" && (
+          <div>
+            <Input type="text" inputMode="numeric" maxLength={5} className="" />
+          </div>
         )}
 
         {(mode === "signin" ||
@@ -178,6 +212,50 @@ export const AuthForm = ({
                 {errors.password.message as string}
               </p>
             )}
+          </div>
+        )}
+
+        {mode === "verify-email" && (
+          <div className="flex gap-7 justify-center mt-10">
+            {[0, 1, 2, 3, 4].map((idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  className="w-17 h-17 text-center text-xl md:text-3xl tracking-widest border rounded-md"
+                  {...register(`verificationCode.${idx}`, { required: true })}
+                  autoComplete={idx === 0 ? "one-time-code" : undefined}
+                  onInput={(e) => {
+                    const input = e.target as HTMLInputElement;
+                    if (input.value.length === 1) {
+                      const next = document.querySelector<HTMLInputElement>(
+                        `input[name="verificationCode.${idx + 1}"]`
+                      );
+                      if (next) next.focus();
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === "Backspace" &&
+                      !(e.target as HTMLInputElement).value &&
+                      idx > 0
+                    ) {
+                      const prev = document.querySelector<HTMLInputElement>(
+                        `input[name="verificationCode.${idx - 1}"]`
+                      );
+                      if (prev) prev.focus();
+                    }
+                  }}
+                />
+              </div>
+            ))}
+            {errors.verificationCode &&
+              typeof errors.verificationCode.message === "string" && (
+                <p className="text-sm text-red-500 mt-2 w-full text-center">
+                  {errors.verificationCode.message}
+                </p>
+              )}
           </div>
         )}
 
@@ -270,7 +348,7 @@ export const AuthForm = ({
               : mode === "forgot-password"
               ? "Sending Link..."
               : mode === "verify-email"
-              ? "Verifying Email..."
+              ? "Verifying Code..."
               : mode === "reset-password"
               ? "Resetting Password..."
               : "Submitting"
@@ -281,7 +359,7 @@ export const AuthForm = ({
             : mode === "forgot-password"
             ? "Send Reset Link"
             : mode === "verify-email"
-            ? "Resend Email"
+            ? "Submit Code"
             : mode === "reset-password"
             ? "Reset Password"
             : "Submit"}

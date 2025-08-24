@@ -7,8 +7,11 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-      {children}
+    <main className="flex min-h-screen">
+      <div className="w-full md:w-2/3 flex items-center justify-center">
+        {children}
+      </div>
+      <div className="w-1/3 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_70%)] hidden md:flex items-center justify-center"></div>
       <Toaster position="top-right" />
     </main>
   );
