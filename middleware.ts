@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const protectedRoutes = ["/home", "/settings", "/builder", "/submissions"];
+const protectedRoutes = ["/homes", "/settingss", "/builder", "/submissions"];
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("auth_token")?.value;

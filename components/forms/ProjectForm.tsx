@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useForm, Controller, FieldValues } from "react-hook-form";
+import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { z } from "zod";
@@ -9,8 +9,8 @@ import toast from "react-hot-toast";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "../ui/checkbox";
-import { Label } from "../ui/label";
+// import { Checkbox } from "../ui/checkbox";
+// import { Label } from "../ui/label";
 
 export type ProjectFormMode = "create" | "update";
 
@@ -30,7 +30,6 @@ export const ProjectForm = ({
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -47,12 +46,12 @@ export const ProjectForm = ({
     }
   };
 
-  const assetOptions = [
-    { id: "furniture", label: "Furniture" },
-    { id: "ict", label: "ICT Assets" },
-    { id: "books", label: "Books" },
-    { id: "others", label: "Others" },
-  ];
+  // const assetOptions = [
+  //   { id: "furniture", label: "Furniture" },
+  //   { id: "ict", label: "ICT Assets" },
+  //   { id: "books", label: "Books" },
+  //   { id: "others", label: "Others" },
+  // ];
 
   return (
     <div className="flex flex-col w-full">
@@ -112,9 +111,9 @@ export const ProjectForm = ({
           )}
         </div>
 
-        {mode === "create" && (
+        {/* {mode === "create" && (
           <div className="space-y-3 text-left">
-            <Label className="text-base font-medium">Project Asset Types</Label>
+            <Label className="text-sm font-medium">Project Asset Types</Label>
 
             <Controller
               name="assetTypes"
@@ -161,7 +160,7 @@ export const ProjectForm = ({
               </p>
             )}
           </div>
-        )}
+        )} */}
 
         {/* Submit */}
         <Button

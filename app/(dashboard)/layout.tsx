@@ -1,31 +1,30 @@
-"use client";
+"use server";
 
-import { HeaderNav } from "@/components/sections/HeaderNav";
+import AppSidebar from "@/components/sections/AppSidebar";
 import { Toaster } from "react-hot-toast";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import Navbar from "@/components/sections/Navbar";
+import { cookies } from "next/headers";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   return (
     <div className="flex flex-col min-h-screen">
-      <HeaderNav />
-      <div className="flex flex-1 w-full">
-        <main
-          className="
-            flex-1
-            transition-all duration-300 ease-in-out
-            min-h-screen
-            px-4 py-6
-            ml-0
-            md:ml-[4.5rem]
-            lg:ml-64
-          "
-        >
-          {children}
-        </main>
-      </div>
+      <>
+        <SidebarProvider defaultOpen={defaultOpen}>
+          <AppSidebar />
+          <main className="w-full">
+            <Navbar />
+            <div className="px-4">{children}</div>
+          </main>
+        </SidebarProvider>
+      </>
       <Toaster position="top-right" />
     </div>
   );

@@ -33,10 +33,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${ibmPlexSerif.variable} ${dmSans.variable}`}
+      suppressHydrationWarning
     >
       <body className="flex min-h-screen">
         {/* Main Content Area */}
-        <main className="flex-1 md:mt-0">{children}</main>
+        <main className="w-full flex-1 md:mt-0">{children}</main>
       </body>
     </html>
   );
