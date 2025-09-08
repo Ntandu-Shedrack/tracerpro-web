@@ -11,7 +11,7 @@ export default function AuthLayout({
       <div className="w-full md:w-2/3 flex items-center justify-center">
         {children}
       </div>
-      <div className="w-1/3 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_70%)] hidden md:flex items-center justify-center"></div>
+      <div className="w-1/3 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_70%)] hidden md:flex items-center justify-center rounded-l-lg"></div>
       <Toaster position="top-right" />
     </main>
   );

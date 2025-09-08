@@ -52,17 +52,6 @@ export const AuthForm = ({
     setIsLoading(true);
     try {
       await onSubmitHandler(data);
-      // toast.success(
-      //   mode === "forgot-password"
-      //     ? "Password reset link sent!"
-      //     : mode === "verify-email"
-      //     ? "Verification email sent!"
-      //     : mode === "reset-password"
-      //     ? "Password reset successfully!"
-      //     : `${
-      //         mode === "signin" ? "Signed in" : "Account created"
-      //       } successfully!`
-      // );
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");
     } finally {

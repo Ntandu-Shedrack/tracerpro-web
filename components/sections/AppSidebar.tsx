@@ -12,7 +12,6 @@ import {
   BriefcaseBusiness,
   Monitor,
   Book,
-  Package,
   Armchair,
   FileBarChart2,
   Warehouse,
@@ -95,24 +94,22 @@ const dashboardItems = [
 const projectItems = [
   {
     title: "2023/24 Financial Year",
-    url: "/project-1",
+    url: "/projects",
     icon: BriefcaseBusiness,
     subtitle: [
-      { title: "Furniture Assets", icon: Armchair },
+      { title: "Furniture", icon: Armchair },
       { title: "ICT Assets", icon: Monitor },
       { title: "Books", icon: Book },
-      { title: "Others", icon: Package },
     ],
   },
   {
     title: "2024/25 Financial Year",
-    url: "/project-1",
+    url: "/projects",
     icon: BriefcaseBusiness,
     subtitle: [
-      { title: "Furniture Assets", icon: Armchair },
+      { title: "Furniture", icon: Armchair },
       { title: "ICT Assets", icon: Monitor },
       { title: "Books", icon: Book },
-      { title: "Others", icon: Package },
     ],
   },
 ];
@@ -134,7 +131,7 @@ const AppSidebar = () => {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarSeparator />
+      <SidebarSeparator className="mx-auto" />
       <SidebarContent>
         {/* Dashboard Menu */}
         <SidebarGroup>
@@ -280,10 +277,10 @@ const AppSidebar = () => {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="group px-2 py-8">
+                <SidebarMenuButton className="group px-2 py-6">
                   {/* Avatar */}
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center">
                       <User2 className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <div className="flex flex-col text-left leading-tight">

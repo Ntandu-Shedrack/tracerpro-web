@@ -13,10 +13,10 @@ export const Footer = () => {
           <Image src={logo} height={40} alt="SaaS Logo" className="relative" />
         </div>
         <nav className="flex flex-col md:flex-row md:justify-center gap-6 mt-6">
-          <a href="#">About</a>
-          <a href="#">Features</a>
-          <a href="#">Contact</a>
-          <a href="#">Help</a>
+          <a href="/about">About</a>
+          <a href="/features">Features</a>
+          <a href="/contact">Contact</a>
+          <a href="/help">Help</a>
         </nav>
         <div className="flex justify-center gap-6 mt-6">
           <TwitterIcon />
