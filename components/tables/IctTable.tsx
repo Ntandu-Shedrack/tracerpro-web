@@ -1,22 +1,16 @@
 "use client";
 
 import * as React from "react";
-import {
-  ColumnDef,
-  flexRender,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getCoreRowModel,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
 import { DownloadIcon, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
+import { DataTable } from "../sections/DataTable";
 
-// Define Furniture type
-type Furniture = {
+// -----------------------------
+// Types
+// -----------------------------
+type Ict = {
   id: number;
   projectId: number;
   name: string;
@@ -31,8 +25,10 @@ type Furniture = {
   supplier: string;
 };
 
-// Dummy data
-const dummyFurniture: Furniture[] = [
+// -----------------------------
+// Dummy Data
+// -----------------------------
+const dummyIct: Ict[] = [
   {
     id: 1,
     projectId: 1,
@@ -63,8 +59,10 @@ const dummyFurniture: Furniture[] = [
   },
 ];
 
-// Table columns
-const columns: ColumnDef<Furniture>[] = [
+// -----------------------------
+// Table Columns
+// -----------------------------
+const columns: ColumnDef<Ict>[] = [
   { accessorKey: "name", header: "Name" },
   { accessorKey: "barcode", header: "Barcode" },
   { accessorKey: "description", header: "Description" },
@@ -77,20 +75,20 @@ const columns: ColumnDef<Furniture>[] = [
     id: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      const furniture = row.original;
+      const ict = row.original;
       return (
         <div className="flex gap-2">
           <Button
             size="sm"
             variant="outline"
-            onClick={() => alert(`Edit furniture ${furniture.id}`)}
+            onClick={() => alert(`Edit ${ict.name}`)}
           >
             <Pencil className="w-4 h-4" />
           </Button>
           <Button
             size="sm"
             variant="destructive"
-            onClick={() => alert(`Delete furniture ${furniture.id}`)}
+            onClick={() => alert(`Delete ${ict.name}`)}
           >
             <Trash className="w-4 h-4" />
           </Button>
@@ -100,145 +98,29 @@ const columns: ColumnDef<Furniture>[] = [
   },
 ];
 
+// -----------------------------
+// Component
+// -----------------------------
 export default function IctPage() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [data, setData] = React.useState<Furniture[]>(dummyFurniture);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = React.useState("");
-
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      sorting,
-      globalFilter,
-    },
-    onSortingChange: setSorting,
-    onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    globalFilterFn: (row, columnId, filterValue) => {
-      const value = row.getValue(columnId);
-      if (value == null) return false;
-      return value.toString().toLowerCase().includes(filterValue.toLowerCase());
-    },
-  });
-
   return (
-    <div className="space-y-4">
-      {/* Header with title, search input, and new ict button */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 backdrop-blur">
-        {/* Title */}
-        <h2 className="text-xl font-bold">ICT Assets List</h2>
-
-        {/* Toolbar (aligned right) */}
-        <div className="flex flex-wrap items-center gap-2 justify-end">
-          {/* Search */}
-          <Input
-            placeholder="Search ICT Assets..."
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            className="w-[200px] md:w-[250px]"
-          />
-
-          {/* Buttons group */}
-          <Button
-            variant="outline"
-            onClick={() => {
-              console.log("Downloading List");
-            }}
-          >
-            <DownloadIcon />
+    <DataTable
+      title="ICT Assets List"
+      columns={columns}
+      data={dummyIct}
+      searchPlaceholder="Search ICT Asset..."
+      toolbarActions={
+        <>
+          <Button variant="outline" onClick={() => console.log("Download...")}>
+            <DownloadIcon className="w-4 h-4" />
           </Button>
-
           <Link
             href="/projects/ict-assets/import"
-            className="py-2 btn btn-primary hover:bg-[#001E80] transition whitespace-nowrap"
+            className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary/90 transition"
           >
             + Import
           </Link>
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="rounded-lg border overflow-hidden">
-        <table className="w-full border-collapse">
-          <thead className="bg-muted">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="p-3 text-left font-medium text-sm"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="border-t hover:bg-muted/50 transition-colors"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-3 text-sm">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex items-center justify-between gap-4 py-2">
-        <div className="text-sm text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Prev
-          </Button>
-          {Array.from({ length: table.getPageCount() }, (_, i) => (
-            <Button
-              key={i}
-              size="sm"
-              variant={
-                table.getState().pagination.pageIndex === i
-                  ? "default"
-                  : "outline"
-              }
-              onClick={() => table.setPageIndex(i)}
-            >
-              {i + 1}
-            </Button>
-          ))}
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }

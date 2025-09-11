@@ -15,7 +15,7 @@ export default function SignInPage() {
     try {
       await loginUser(data);
       toast.success("Logged in successful");
-      router.push("/home");
+      router.push("/dashboard/home");
     } catch (error: any) {
       const errorMessage =
         error?.message ||

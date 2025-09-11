@@ -116,7 +116,7 @@ const Navbar: React.FC = () => {
 
       {/* Right: user dropdown */}
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger className="ml-2">
           <Avatar>
             <AvatarImage src="https://avatars.githubusercontent.com/u/1486366" />
             <AvatarFallback>CN</AvatarFallback>

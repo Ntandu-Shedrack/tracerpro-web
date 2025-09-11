@@ -1,16 +1,11 @@
 "use client";
 
 import * as React from "react";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { DownloadIcon, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
+import { DataTable } from "../sections/DataTable";
 
 // Define Book type
 type Book = {
@@ -85,14 +80,14 @@ const columns: ColumnDef<Book>[] = [
           <Button
             size="sm"
             variant="outline"
-            onClick={() => alert(`Edit book ${book.id}`)}
+            onClick={() => alert(`Edit ${book.title}`)}
           >
             <Pencil className="w-4 h-4" />
           </Button>
           <Button
             size="sm"
             variant="destructive"
-            onClick={() => alert(`Delete book ${book.id}`)}
+            onClick={() => alert(`Delete ${book.title}`)}
           >
             <Trash className="w-4 h-4" />
           </Button>
@@ -103,90 +98,25 @@ const columns: ColumnDef<Book>[] = [
 ];
 
 export default function BooksPage() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [data, setData] = React.useState<Book[]>(dummyBooks);
-  const [globalFilter, setGlobalFilter] = React.useState("");
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
-    <div className="space-y-4">
-      {/* Header with title + New Book button */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 backdrop-blur">
-        {/* Title */}
-        <h2 className="text-xl font-bold">Books List</h2>
-
-        {/* Toolbar (aligned right) */}
-        <div className="flex flex-wrap items-center gap-2 justify-end">
-          {/* Search */}
-          <Input
-            placeholder="Search books..."
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            className="w-[200px] md:w-[250px]"
-          />
-
-          {/* Buttons group */}
-          <Button
-            variant="outline"
-            onClick={() => {
-              console.log("Downloading List");
-            }}
-          >
-            <DownloadIcon />
+    <DataTable
+      title="Books List"
+      columns={columns}
+      data={dummyBooks}
+      searchPlaceholder="Search books..."
+      toolbarActions={
+        <>
+          <Button variant="outline" onClick={() => console.log("Download...")}>
+            <DownloadIcon className="w-4 h-4" />
           </Button>
-
           <Link
-            href="/projects/ict-assets/import"
-            className="py-2 btn btn-primary hover:bg-[#001E80] transition whitespace-nowrap"
+            href="/projects/books/import"
+            className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary/90 transition"
           >
             + Import
           </Link>
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="rounded-lg border">
-        <table className="w-full border-collapse">
-          <thead className="bg-muted">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="p-3 text-left font-medium text-sm"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="border-t hover:bg-muted/50 transition-colors"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-3 text-sm">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }
